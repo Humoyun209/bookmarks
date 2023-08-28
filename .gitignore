@@ -5,3 +5,4 @@ cert.crt
 cert.key
 data.json
 media
+__pycache__
