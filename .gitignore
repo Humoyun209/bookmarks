@@ -1,0 +1,7 @@
+venv/
+bookmarks/settings.py
+db.sqlite3
+cert.crt
+cert.key
+data.json
+media

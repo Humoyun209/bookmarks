@@ -1,4 +1,6 @@
-### Project for saving bookmarks, which was made with django 4 (The project was made according to the instructions of Antonio Mele's book)
+## My Bookmarks with Django 4 ❤️
+
+**Project for saving bookmarks, which was made with django 4 (The project was made according to the instructions of Antonio Mele's book)**
 
 **To run applications:**
 
