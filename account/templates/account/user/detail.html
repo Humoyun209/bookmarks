@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+
+{% block title %}{{ user.get_full_name }}{% endblock %}
+
+{% block content %}
+  <h1>{{ user.get_full_name }}</h1>
+  <div class="profile-info">
+    <img src="{% thumbnail user.profile.photo 180x180 %}" class="user-detail">
+  </div>
+  {% with total_followers=user.followers.count %}
+    <span class="count">
+      <span class="total">{{ total_followers }}</span>
+      follower{{ total_followers|pluralize }}
+    </span>
+    <a href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" class="follow button">
+      {% if request.user not in user.followers.all %}
+        Follow
+      {% else %}
+        Unfollow
+      {% endif %}
+    </a>
+    <div id="image-list" class="image-container">
+      {% include "images/image/list_images.html" with images=user.images.all %}
+    </div>
+  {% endwith %}
+{% endblock %}
+
+{% block domready %}
+const url = '{% url "user_follow" %}'
+const options = {
+  method: 'POST',
+  headers: {'X-CSRFToken': csrftoken},
+  mode: 'same-origin'
+}
+
+document.querySelector('a.follow.button').addEventListener('click', function(e) {
+  e.preventDefault()
+  let followButton = this
+
+  const formData = new FormData
+  formData.append('id', followButton.dataset.id)
+  formData.append('action', followButton.dataset.action)
+  options['body'] = formData
+
+  fetch(url, options)
+  .then(response => response.json())
+  .then(
+    data => {
+      if (data['status'] == 'ok') {
+        console.log(1)
+        let previousAction = followButton.dataset.action
+        let action = previousAction == 'follow' ? 'unfollow' : 'follow'
+        followButton.innerHTML = action
+        followButton.dataset.action = action
+
+        let countFollowers = document.querySelector('span.total')
+        let count = parseInt(countFollowers.innerHTML)
+        countFollowers.innerHTML = previousAction === 'follow' ? count + 1 : count - 1
+      }
+    }
+  )
+})
+{% endblock %}
