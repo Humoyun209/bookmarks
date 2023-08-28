@@ -4,3 +4,4 @@
 
 > git clone git@github.com:Humoyun209/bookmarks.git <br>
 > pip install -r requirements.txt
+
