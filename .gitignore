@@ -6,3 +6,4 @@ cert.key
 data.json
 media
 __pycache__
+.vscode
