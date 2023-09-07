@@ -28,6 +28,7 @@
 
 {% block domready %}
 const url = '{% url "user_follow" %}'
+
 const options = {
   method: 'POST',
   headers: {'X-CSRFToken': csrftoken},
@@ -39,6 +40,7 @@ document.querySelector('a.follow.button').addEventListener('click', function(e) 
   let followButton = this
 
   const formData = new FormData
+  
   formData.append('id', followButton.dataset.id)
   formData.append('action', followButton.dataset.action)
   options['body'] = formData
@@ -47,8 +49,7 @@ document.querySelector('a.follow.button').addEventListener('click', function(e) 
   .then(response => response.json())
   .then(
     data => {
-      if (data['status'] == 'ok') {
-        console.log(1)
+      if (data.status == 'ok') {
         let previousAction = followButton.dataset.action
         let action = previousAction == 'follow' ? 'unfollow' : 'follow'
         followButton.innerHTML = action
